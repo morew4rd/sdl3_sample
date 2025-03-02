@@ -1,19 +1,19 @@
 ## SDL3 App From Source Minimal Example
-This is a minimal example for building and using SDL3, SDL_Mixer, SDL_Image, and SDL_ttf_ from source 
+This is a minimal example for building and using SDL3, SDL_Mixer, SDL_Image, and SDL_ttf_ from source
 using C++ and CMake. It also demonstrates setting up things like macOS/iOS
 bundles.
-See [src/main.cpp](src/main.cpp) for the code. 
+See [src/main.cpp](src/main.cpp) for the code.
 
 ### Building And Running
 Are you a complete beginner? If so, read [this](https://github.com/Ravbug/sdl3-sample/wiki/Setting-up-your-computer)!
 Otherwise, install CMake and your favorite compiler, and follow the commands below:
 ```sh
 # You need to clone with submodules, otherwise SDL will not download.
-git clone https://github.com/Ravbug/sdl3-sample --depth=1 --recurse-submodules
+git clone https://github.com/morew4rd/sdl3_sample --depth=1 --recurse-submodules
 cd sdl3-sample
 cmake -S . -B build
 ```
-You can also use an init script inside [`config/`](config/). Then open the IDE project inside `build/` 
+You can also use an init script inside [`config/`](config/). Then open the IDE project inside `build/`
 (If you had CMake generate one) and run!
 
 ## Supported Platforms

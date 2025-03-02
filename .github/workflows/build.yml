@@ -1,5 +1,12 @@
 name: Build Sample
-on: [push, pull_request]
+
+# on: [push, pull_request]
+on:
+  push:
+    branches:
+      - rel
+    tags:
+      - test
 
 jobs:
     build-win:
@@ -22,7 +29,7 @@ jobs:
           - name: Upload Build
             uses: actions/upload-artifact@v4
             if: ${{ matrix.target != 'WindowsStore' }}
-            with: 
+            with:
                 name: sdl-min-${{ matrix.target }}-${{ matrix.arch }}
                 path: |
                     build/Release/*.exe
@@ -30,7 +37,7 @@ jobs:
                     build/Release/*.ttf
                     build/Release/*.ogg
                     build/Release/*.svg
-                    
+
     build-linux:
         name: Build for Linux
         runs-on: ubuntu-latest
@@ -46,7 +53,7 @@ jobs:
             run: cmake --build build --target sdl-min --config Release
           - name: Upload Build
             uses: actions/upload-artifact@v4
-            with: 
+            with:
                 name: sdl-min-Linux
                 path: |
                     build/Release/sdl-min
@@ -77,11 +84,11 @@ jobs:
             run: cmake --build build --target install --config Release
 
           - name: Create DMG
-            run: | 
+            run: |
                 cd build
                 hdiutil create -size 2g -srcfolder release -volname sdl_min_apple_${{ matrix.target }} sdl_min_apple_${{ matrix.target }}.dmg
           - name: Upload Build
             uses: actions/upload-artifact@v4
-            with: 
+            with:
                 name: sdl-min-apple-${{ matrix.target }}
                 path: build/*.dmg

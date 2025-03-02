@@ -1,5 +1,12 @@
 name: Build Sample For Web
-on: [push, pull_request]
+
+# on: [push, pull_request]
+on:
+  push:
+    branches:
+      - rel
+    tags:
+      - test
 
 jobs:
   build-web:
@@ -31,11 +38,11 @@ jobs:
          chmod -c -R +rX "_site/" | while read line; do
            echo "::warning title=Invalid file permissions automatically fixed::$line"
          done
-      - name: Upload 
+      - name: Upload
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site/
-        
+
  # Deploy job
   deploy:
     # Add a dependency to the build job
