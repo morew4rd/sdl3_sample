@@ -7,7 +7,7 @@ build-example:
 	cmake --build _b
 
 run-example:
-	_b/sdl3-mini/app
+	./_b/Release/sdl-min.app/Contents/MacOS/sdl-min
 
 config-example-web:
 	emcmake cmake -DCMAKE_BUILD_TYPE=Release -S . -B _bw
