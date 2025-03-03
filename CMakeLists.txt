@@ -125,16 +125,16 @@ if (APPLE)
         target_sources(${EXECUTABLE_NAME} PRIVATE ${FILE})
         set_property(SOURCE ${FILE} PROPERTY MACOSX_PACKAGE_LOCATION "Resources/${relpath}")
     endmacro()
-    add_resource("${CMAKE_CURRENT_LIST_DIR}/src/assets/Inter-VariableFont.ttf")
-    add_resource("${CMAKE_CURRENT_LIST_DIR}/src/assets/the_entertainer.ogg")
-    add_resource("${CMAKE_CURRENT_LIST_DIR}/src/assets/gs_tiger.svg")
+    add_resource("${CMAKE_CURRENT_LIST_DIR}/src/Inter-VariableFont.ttf")
+    add_resource("${CMAKE_CURRENT_LIST_DIR}/src/the_entertainer.ogg")
+    add_resource("${CMAKE_CURRENT_LIST_DIR}/src/gs_tiger.svg")
 elseif(EMSCRIPTEN)
     # on the web, we have to put the files inside of the webassembly
     # somewhat unintuitively, this is done via a linker argument.
     target_link_libraries(${EXECUTABLE_NAME} PRIVATE
-        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/assets/Inter-VariableFont.ttf@/\""
-        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/assets/the_entertainer.ogg@/\""
-        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/assets/gs_tiger.svg@/\""
+        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/Inter-VariableFont.ttf@/\""
+        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/the_entertainer.ogg@/\""
+        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/gs_tiger.svg@/\""
     )
 else()
     if (ANDROID)
@@ -157,9 +157,9 @@ else()
 		    DEPENDS "${filename}"
 	    )
     endmacro()
-    copy_helper("assets/Inter-VariableFont.ttf")
-    copy_helper("assets/the_entertainer.ogg")
-    copy_helper("assets/gs_tiger.svg")
+    copy_helper("Inter-VariableFont.ttf")
+    copy_helper("the_entertainer.ogg")
+    copy_helper("gs_tiger.svg")
 endif()
 
 # set some extra configs for each platform

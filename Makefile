@@ -16,4 +16,4 @@ build-example-web:
 	cmake --build _bw
 
 run-example-web:
-	python -m http.server -d _bw/Release 8000
+	python -m http.server -d _bw 8000

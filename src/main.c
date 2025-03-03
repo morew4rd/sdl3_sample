@@ -68,7 +68,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
     /* Load the font */
     char fontPath[256];
-    snprintf(fontPath, sizeof(fontPath), "%sassets/Inter-VariableFont.ttf", basePath);
+    snprintf(fontPath, sizeof(fontPath), "%sInter-VariableFont.ttf", basePath);
     TTF_Font* font = TTF_OpenFont(fontPath, 36);
     if (!font) {
         SDL_DestroyRenderer(renderer);
@@ -98,7 +98,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
     /* Load the SVG image */
     char svgPath[256];
-    snprintf(svgPath, sizeof(svgPath), "%sassets/gs_tiger.svg", basePath);
+    snprintf(svgPath, sizeof(svgPath), "%sgs_tiger.svg", basePath);
     SDL_Surface* svg_surface = IMG_Load(svgPath);
     if (!svg_surface) {
         SDL_DestroyTexture(messageTex);
@@ -153,7 +153,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
     /* Load and play music */
     char musicPath[256];
-    snprintf(musicPath, sizeof(musicPath), "%sassets/the_entertainer.ogg", basePath);
+    snprintf(musicPath, sizeof(musicPath), "%sthe_entertainer.ogg", basePath);
     Mix_Music* music = Mix_LoadMUS(musicPath);
     Mix_VolumeMusic(10);
     if (!music) {
