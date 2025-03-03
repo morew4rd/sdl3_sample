@@ -13,7 +13,7 @@ git clone https://github.com/morew4rd/sdl3_sample --depth=1 --recurse-submodules
 cd sdl3-sample
 cmake -S . -B build
 ```
-You can also use an init script inside [`config/`](config/). Then open the IDE project inside `build/`
+You can also use an init script inside [`etc/`](etc/). Then open the IDE project inside `build/`
 (If you had CMake generate one) and run!
 
 ## Supported Platforms
@@ -29,7 +29,7 @@ I have tested the following:
 | Web* | wasm | Ninja, Make |
 | Android* | x86, x64, arm, arm64 | Ninja via Android Studio |
 
-*See further instructions in [`config/`](config/)
+*See further instructions in [`etc/`](etc/)
 
 Note: UWP support was [removed from SDL3](https://github.com/libsdl-org/SDL/pull/10731) during its development. For historical reasons, you can get a working UWP sample via this commit: [df270da](https://github.com/Ravbug/sdl3-sample/tree/df270daa8d6d48426e128e50c73357dfdf89afbf)
 
