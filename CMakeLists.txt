@@ -1,5 +1,31 @@
 cmake_minimum_required(VERSION 3.16)
 
+# Declare the project
+project(sdl-min)
+
+# Set the name of the executable
+set(EXECUTABLE_NAME ${PROJECT_NAME})
+
+# List of sources for the executable
+set(EXECUTABLE_SOURCES
+    src/main.c
+)
+
+# Create an executable or a shared library based on the platform and add our sources to it
+if (ANDROID)
+	# The SDL java code is hardcoded to load libmain.so on android, so we need to change EXECUTABLE_NAME
+	set(EXECUTABLE_NAME main)
+	add_library(${EXECUTABLE_NAME} SHARED)
+else()
+	add_executable(${EXECUTABLE_NAME})
+endif()
+
+# Add your sources to the target
+target_sources(${EXECUTABLE_NAME} PRIVATE ${EXECUTABLE_SOURCES})
+
+# Set compiler version
+target_compile_features(${EXECUTABLE_NAME} PUBLIC cxx_std_20)
+
 # set the output directory for built objects.
 # This makes sure that the dynamic library goes into the build directory automatically.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
@@ -8,8 +34,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 # prevent installing to system directories.
 set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}" CACHE INTERNAL "")
 
-# Declare the project
-project(sdl-min)
 
 if ((APPLE AND NOT CMAKE_SYSTEM_NAME MATCHES "Darwin") OR EMSCRIPTEN)
     set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")    # Disable shared builds on platforms where it does not make sense to use them
@@ -24,24 +48,7 @@ if(MSVC)
     endif()
 endif()
 
-# Set the name of the executable
-set(EXECUTABLE_NAME ${PROJECT_NAME})
 
-# Create an executable or a shared library based on the platform and add our sources to it
-if (ANDROID)
-	# The SDL java code is hardcoded to load libmain.so on android, so we need to change EXECUTABLE_NAME
-	set(EXECUTABLE_NAME main)
-	add_library(${EXECUTABLE_NAME} SHARED)
-else()
-	add_executable(${EXECUTABLE_NAME})
-endif()
-
-# Add your sources to the target
-target_sources(${EXECUTABLE_NAME}
-PRIVATE
-    src/main.c
-    src/iosLaunchScreen.storyboard
-)
 # What is iosLaunchScreen.storyboard? This file describes what Apple's mobile platforms
 # should show the user while the application is starting up. If you don't include one,
 # then you get placed in a compatibility mode that does not allow HighDPI.
@@ -51,11 +58,10 @@ PRIVATE
 # To get an app icon on Apple platforms, add it to your executable.
 # Afterward, the image file in Info.plist.in.
 if(APPLE)
-    target_sources("${EXECUTABLE_NAME}" PRIVATE "src/logo.png")
+    target_sources(${EXECUTABLE_NAME} PRIVATE "etc/logo.png")
+    target_sources(${EXECUTABLE_NAME} PRIVATE "etc/iosLaunchScreen.storyboard")
 endif()
 
-# Set C++ version
-target_compile_features(${EXECUTABLE_NAME} PUBLIC cxx_std_20)
 
 # on Web targets, we need CMake to generate a HTML webpage.
 if(EMSCRIPTEN)
@@ -162,7 +168,7 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES
     MACOSX_BUNDLE TRUE
     # Set the Info.plist file for Apple Mobile platforms. Without this file, your app
     # will not launch.
-    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/src/Info.plist.in"
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/etc/Info.plist.in"
 
     # in Xcode, create a Scheme in the schemes dropdown for the app.
     XCODE_GENERATE_SCHEME TRUE
