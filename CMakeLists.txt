@@ -39,7 +39,10 @@ if ((APPLE AND NOT CMAKE_SYSTEM_NAME MATCHES "Darwin") OR EMSCRIPTEN)
     set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")    # Disable shared builds on platforms where it does not make sense to use them
     set(SDL_SHARED OFF)
 else()
-    set(SDL_SHARED ON)
+    #set(SDL_SHARED ON)
+    # MG: disabled that and replaced with:
+    set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")    # Disable shared builds on platforms where it does not make sense to use them
+    set(SDL_SHARED OFF)
 endif()
 
 if(MSVC)
@@ -118,23 +121,23 @@ target_compile_definitions(${EXECUTABLE_NAME} PUBLIC SDL_MAIN_USE_CALLBACKS)
 if (APPLE)
     # on Apple targets, the application bundle has a "resources" subfolder where we can place our assets.
     # SDL_GetBasePath() gives us easy access to that location.
-    set(input_root "${CMAKE_CURRENT_LIST_DIR}/src")
+    set(input_root "${CMAKE_CURRENT_LIST_DIR}/res")
     macro(add_resource FILE)
         file(RELATIVE_PATH relpath "${input_root}" "${FILE}")
         get_filename_component(relpath "${relpath}" DIRECTORY)
         target_sources(${EXECUTABLE_NAME} PRIVATE ${FILE})
         set_property(SOURCE ${FILE} PROPERTY MACOSX_PACKAGE_LOCATION "Resources/${relpath}")
     endmacro()
-    add_resource("${CMAKE_CURRENT_LIST_DIR}/src/Inter-VariableFont.ttf")
-    add_resource("${CMAKE_CURRENT_LIST_DIR}/src/the_entertainer.ogg")
-    add_resource("${CMAKE_CURRENT_LIST_DIR}/src/gs_tiger.svg")
+    add_resource("${CMAKE_CURRENT_LIST_DIR}/res/Inter-VariableFont.ttf")
+    add_resource("${CMAKE_CURRENT_LIST_DIR}/res/the_entertainer.ogg")
+    add_resource("${CMAKE_CURRENT_LIST_DIR}/res/gs_tiger.svg")
 elseif(EMSCRIPTEN)
     # on the web, we have to put the files inside of the webassembly
     # somewhat unintuitively, this is done via a linker argument.
     target_link_libraries(${EXECUTABLE_NAME} PRIVATE
-        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/Inter-VariableFont.ttf@/\""
-        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/the_entertainer.ogg@/\""
-        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/gs_tiger.svg@/\""
+        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/res/Inter-VariableFont.ttf@/\""
+        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/res/the_entertainer.ogg@/\""
+        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/res/gs_tiger.svg@/\""
     )
 else()
     if (ANDROID)
@@ -153,7 +156,7 @@ else()
         endif()
         add_custom_command(POST_BUILD
             TARGET "${EXECUTABLE_NAME}"
-		    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_LIST_DIR}/src/${filename}" "${outname}"
+		    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_LIST_DIR}/res/${filename}" "${outname}"
 		    DEPENDS "${filename}"
 	    )
     endmacro()
