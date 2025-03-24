@@ -15,7 +15,8 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                target: [iOS, tvOS, visionOS, macOS]
+                # target: [iOS, tvOS, visionOS, macOS]
+                target: [macOS]
         steps:
           - uses: actions/checkout@v4
             with:

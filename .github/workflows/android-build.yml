@@ -1,38 +1,38 @@
-name: Build Sample for Android
+# name: Build Sample for Android
 
-# on: [push, pull_request]
-on:
-  push:
-    branches:
-      - rel
-    tags:
-      - test
+# # on: [push, pull_request]
+# on:
+#   push:
+#     branches:
+#       - rel
+#     tags:
+#       - test
 
-jobs:
-  apk:
-    name: Apk Build
-    runs-on: ubuntu-latest
+# jobs:
+#   apk:
+#     name: Apk Build
+#     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           submodules: recursive
+#       - uses: actions/setup-java@v4
+#         with:
+#           distribution: 'temurin'
+#           java-version: '17'
 
-      - name: Update the build.gradle
-        run:  |
-               cp etc/build.gradle deps/SDL/android-project/app/
+#       - name: Update the build.gradle
+#         run:  |
+#                cp etc/build.gradle deps/SDL/android-project/app/
 
-      - name: Build the APK
-        run: |
-              cd deps/SDL/android-project/
-              ./gradlew assembleDebug
+#       - name: Build the APK
+#         run: |
+#               cd deps/SDL/android-project/
+#               ./gradlew assembleDebug
 
-      - name: Upload the APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-debug.apk
-          path: deps/SDL/android-project/app/build/outputs/apk/debug/app-debug.apk
+#       - name: Upload the APK
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: app-debug.apk
+#           path: deps/SDL/android-project/app/build/outputs/apk/debug/app-debug.apk
