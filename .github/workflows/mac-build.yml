@@ -13,10 +13,10 @@ jobs:
         name: Build for Apple
         runs-on: macos-14
         strategy:
-            fail-fast: false
-            matrix:
-                # target: [iOS, tvOS, visionOS, macOS]
-                target: [macOS]
+          fail-fast: false
+          matrix:
+              # target: [iOS, tvOS, visionOS, macOS]
+              target: [iOS, macOS]
         steps:
           - uses: actions/checkout@v4
             with:
@@ -26,24 +26,18 @@ jobs:
             with:
                 xcode-version: "16.1"
           - name: Configure
-            run: |
-                if [ "${{ matrix.target }}" == "macOS" ]; then
-                  cmake -G "Xcode" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -S . -B build
-                else
-                  cmake -G "Xcode" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_SYSTEM_NAME=${{ matrix.target }} -DCMAKE_OSX_ARCHITECTURES="arm64" -S . -B build
-                fi
+            # run: cmake -G "Xcode" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_SYSTEM_NAME=${{ matrix.target }} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -S . -B build
+            run: cmake -G "Xcode" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_SYSTEM_NAME=${{ matrix.target }} -DCMAKE_OSX_ARCHITECTURES="arm64" -S . -B build
           - name: Build
             run: cmake --build build --target install --config Release
           - name: Ad-Hoc Codesign
             run: codesign -s - -f "./build/release/sdl-min.app" --deep
           - name: Create DMG
-            if: matrix.target == 'macOS'
             run: |
                 cd build
-                hdiutil create -srcfolder release -volname sdl_min_apple_macOS sdl_min_apple_macOS.dmg
+                hdiutil create -size 2g -srcfolder release -volname sdl_min_apple_${{ matrix.target }} sdl_min_apple_${{ matrix.target }}.dmg
           - name: Upload Build
-            if: matrix.target == 'macOS'
             uses: actions/upload-artifact@v4
             with:
-                name: sdl-min-apple-macOS
+                name: sdl-min-apple-${{ matrix.target }}
                 path: build/*.dmg
